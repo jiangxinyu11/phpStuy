@@ -5,7 +5,6 @@ if(!isset($_COOKIE['id'])){
     $num=count($arr)-1;
     $uri=$arr[$num];
     header("location:login.php?uri=$uri");
-
 }
 
 ?>
