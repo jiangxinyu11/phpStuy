@@ -13,7 +13,7 @@
         /*width: 200px;*/
         width: 50%;
         position: absolute;
-        top: 30px;
+        top: 50px;
         left: 50px;
     }
     #div2{
@@ -28,20 +28,35 @@
         $id=$_COOKIE['id'];
         $name=$_COOKIE['name'];
         echo "<a href='center.php'>".$name."</a>已登录"."&nbsp;";
-        echo "<a href='logout.php?id=$id'>注销</a>";
+        echo "<a href='logout.php?id=$id'>注销</a>&nbsp;&nbsp;&nbsp;";
     }else{
-        echo "<a href='login.php'>登录</a>";
+        echo "<a href='login.php'>登录</a>&nbsp;&nbsp;&nbsp;";
     }
 ?>
+<form action="index.php" method="get">
+    <input type="text" name="search">
+    <input type="submit" name="sub" value="搜索">
+    <div id="div1">
+</form>
 
-<div id="div1">
 <?php
     include "conn.php";
     if(isset($_GET['id'])){
         $cid=$_GET['id'];
         $sql="select * from blog,user where blog.uid=user.uid and blog.cid=$cid order by blog.time desc";
     }else{
-        $sql="select * from blog,user where blog.uid=user.uid order by blog.time desc";
+        if($e=$_GET['sub']){
+            $e=$_GET['search'];
+            if(strlen($e)){
+                $w="title like '%$e%'";
+            }else{
+                $w=1;
+            }
+
+        }else{
+            $w=1;
+        }
+        $sql="select * from blog,user where $w and blog.uid=user.uid order by blog.time desc";
     }
     $query=mysqli_query($link,$sql);
     while($arr=mysqli_fetch_array($query)) {
